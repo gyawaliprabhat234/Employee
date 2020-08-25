@@ -1,0 +1,153 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/2ae6082057.js"></script>
+
+</head>
+<body>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="card">
+                        <div class="card-title">
+                            <h5 class="text-center">Department</h5>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="department">Department</label>
+                                    <select name="department" class="form-control" data-bind="options:AllDepartment, optionsText:'DepartmentName',
+                                                        optionsValue:$data ,optionsCaption:'--Select--', value:SelectedDepartment">
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="group">Group</label>
+                                    <select name="group" class="form-control" data-bind="options:AllGroup, optionsText:'GroupName',
+                                                        optionsValue:$data ,optionsCaption:'--Select--', value:SelectedGroup">
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-7">
+
+                    <div class="card">
+                        <div class=" card-title">
+                            <h5 class="text-center">Employee Information With Roles</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" data-bind="value:Name">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="address">Address</label>
+                                        <input type="text" class="form-control" data-bind="value:Address">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="age">Age</label>
+                                        <input type="text" class="form-control" data-bind="value:Age">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <label for="post">Roles</label>
+
+                                    <select name="post" class="browser-default custom-select" data-bind="options:AllPost, optionsText:'PostName',
+                                                        optionsValue:$data , value:SelectedPost, optionsCaption: '--select--'">
+                                    </select>
+
+                                </div>
+                                <div class=" col-md-2">
+                                    <button class="btn btn-primary " style="float: right " data-bind="text:SelectedEmployeeDetail() ? 'Edit' :'Add', click:Add">Submit</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="card">
+                        <div class="card-title">
+                            <h4 class="text-center">Employees Role List</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table table-responsive " style="position: relative; height: 200px; overflow: auto; display: block;">
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th><b>Sn.</b></th>
+                                            <th><b>Name</b></th>
+                                            <th><b>Address</b></th>
+                                            <th><b>Age</b></th>
+                                            <th><b>Role</b></th>
+                                            <th><b>PostInNepali</b></th>
+                                            <th colspan="2"><b>Action</b></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="foreach:AllDetail">
+
+                                        <tr>
+                                            <td data-bind="text:($index() + 1)"></td>
+                                            <td data-bind="text:EName"> </td>
+                                            <td data-bind="text:EAddress"></td>
+                                            <td data-bind="text:EAge"></td>
+                                            <td data-bind="text:ESelectedPost().PostName"></td>
+                                            <td data-bind="text:ESelectedPost().NEpaliConvert"></td>
+                                            <td><button data-bind="click:$root.Edit" class="btn btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+                                            <td><button data-bind="click:$root.Delete" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="col-lg-2 float-right">
+                <button class="btn btn-outline-success">Submit</button>
+            </div>
+
+        </div>
+    </div>
+
+    
+    <script src="~/js/knockout-3.4.2.js"></script>
+
+    <script src="~/js/PracticePart.js"></script>
+</body>
+</html>

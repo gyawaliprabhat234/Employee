@@ -1,0 +1,174 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/2ae6082057.js"></script>
+
+</head>
+<body>
+    <div class="row">
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-title">
+                    <h4 class="text-center">Employee List</h4>
+                </div>
+                <div class="card-body">
+                    <table class=" table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Salary</th>
+                                <th colspan="3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach:AllEmployeeList">
+                            <tr>
+                                <td data-bind="text:($index() + 1)"></td>
+                                <td data-bind="text:Name"></td>
+                                <td data-bind="text:Salary"></td>
+                                <td><button class="btn btn-info"><i class="fa fa-eye" aria-hidden="true"></i></button></td>
+                                <td><button class="btn btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+                                <td><button class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-title">
+                    <h4 class="text-center">Employee Registration Form</h4>
+                </div>
+
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-6">
+
+
+                            <div class="card">
+                                <div class="card-title">
+                                    <h5 class="text-center">Personal Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" data-bind="value:Name" class="form-control">
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="salary">Salary</label>
+                                        <input type="text" data-bind="value:Salary" class="form-control">
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dob">Date Of Birth</label>
+                                        <input type="date" data-bind="value:DOB" class="form-control">
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email address</label>
+                                        <input type="email" data-bind="value:EmailAddress" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="card">
+                                <div class="card-title">
+                                    <h5 class="text-center">
+                                        Academic Inforamtion
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <div class="form-group">
+                                                <label for="qualification">Qualification</label>
+                                                <select name="qualification" class="form-control" data-bind="options:Qualifications, optionsText:'NameEng',
+                                                        optionsValue:$data ,optionsCaption:'--Select--', value:SelectedQualification">
+                                                </select>
+
+                                                <small id="emailHelp" class="form-text text-muted"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="form-group">
+                                                <label for="mark">Mark Obtained</label>
+                                                <input type="text" class="form-control" data-bind="value:MarksObtained">
+                                                <small id="emailHelp" class="form-text text-muted"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2" style="top:30px">
+                                            <button class="btn btn-primary" data-bind="text: SelectedAcademicInformation() ? 'Update' : 'Add',  click:Add"></button>
+                                        </div>
+                                    </div>
+                                    <div class="table table-responsive " style="position: relative; height: 245px; overflow: auto; display: block;">
+                                        <table class=" table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <td><b>SN</b></td>
+                                                    <td><b>ID</b></td>
+                                                    <td><b>Qualification</b></td>
+                                                    <td><b>Mark Obt.</b></td>
+                                                    <td colspan="2"><b>Action</b></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody data-bind="foreach:AcademicInformations">
+                                                <tr>
+                                                    <td data-bind="text:($index() + 1)"></td>
+                                                    <td data-bind="text:Qualification().QId"></td>
+                                                    <td data-bind="text:Qualification().NameEng"></td>
+                                                    <td data-bind="text:MarksObtained"></td>
+                                                    <td><button data-bind="click:$root.Edit" class="btn btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+                                                    <td><button data-bind="click:$root.Delete" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="col-lg-2 float-right">
+                        <button data-bind="click:Submit" class="btn btn-outline-success">Submit</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/knockout-3.4.2.js"></script>
+    <script src="~/js/EmployeeRegistration.js"></script>
+</body>
+</html>
