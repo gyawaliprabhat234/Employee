@@ -50,9 +50,11 @@ function EmployeeRegistrationViewModel() {
     self.Qualifications = ko.observableArray([]);
     getReqArr('/Detail/GetAllQualifications', null, null, self.Qualifications)
     self.AllEmployeeList = ko.observableArray([]);
-    getReqArr('/Detail/GetAllEmployeeDetail', null, null, self.AllEmployeeList)
 
-   
+    self.LoadEmployeeList = function () {
+        getReqArr('/Detail/GetAllEmployeeDetail', null, null, self.AllEmployeeList)
+    }
+    self.LoadEmployeeList();
     self.SelectedQualification = ko.observable();
     self.SelectedQualification1 = ko.observable();
     self.MarksObtained = ko.observable();
@@ -116,6 +118,13 @@ function EmployeeRegistrationViewModel() {
         self.SelectedQualification(data.Qualification());
 
     }
+    self.ClearControls = function () {
+        self.Name(null);
+        self.DOB(null);
+        self.Salary(null);
+        self.EmailAddress(null);
+        self.AcademicInformations([]);
+    }
 
     self.Delete = function (data) {
         if (self.SelectedAcademicInformation()) {
@@ -156,12 +165,15 @@ function EmployeeRegistrationViewModel() {
         };
 
         $.ajaxSetup({ async: false });
-        $.post("/Detail/SaveEmployee", ko.toJS(data), function (result) {
+        $.post("/Detail/SaveEmployee", ko.toJS(data), function (response) {
 
-            if (result.IsSuccess) {
-               
+            if (response.IsSuccess) {
+                alert(response.Message);
+                self.ClearControls();
+                self.LoadEmployeeList();
             } else {
-              
+
+                alert("Data Couldnot saved");
             }
 
 

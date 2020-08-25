@@ -41,7 +41,7 @@ namespace Employee.Controllers
         {
             try
             {
-                List<EmployeeModel> allList = SqlMapper.Query<EmployeeModel>(con, "[dbo].[sp_EmployeeTable_GetAllDetail]",
+                List<EmployeeModel> allList = SqlMapper.Query<EmployeeModel>(con, "dbo.usp_get_all_employees",
                     commandType: CommandType.StoredProcedure).ToList() ;
                 return allList;
             }
@@ -74,14 +74,14 @@ namespace Employee.Controllers
                     }
                 }
 
-
+                return result;
             }
             catch (Exception ex)
             {
 
                 throw;
             }
-            return null;
+            
         }
        public ResponseData SaveAcademicInformations(AcademicInformationModel academicInfo)
         {
