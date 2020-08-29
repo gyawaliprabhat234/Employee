@@ -7,6 +7,7 @@ namespace Employee.Models
 {
     public class EmployeeModel
     {
+        public string Action { get; set; }
       public int EmployeeId { get; set; }
         public string Name { get; set; }
         public DateTime DateOfBirth { get; set; }

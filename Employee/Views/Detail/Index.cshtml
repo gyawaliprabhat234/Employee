@@ -39,7 +39,7 @@
                                 <td data-bind="text:Name"></td>
                                 <td data-bind="text:Salary"></td>
                                 <td><button class="btn btn-info"><i class="fa fa-eye" aria-hidden="true"></i></button></td>
-                                <td><button class="btn btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+                                <td><button data-bind="click:$root.EmployeeUpdate" class="btn btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
                                 <td><button class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
                             </tr>
                             
@@ -122,7 +122,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-2" style="top:30px">
-                                            <button class="btn btn-primary" data-bind="text: SelectedAcademicInformation() ? 'Update' : 'Add',  click:Add"></button>
+                                            <button class="btn btn-primary" data-bind="text: SelectedAcademicInformation() ? 'Update' : 'Add',  click:AddAcademicInformation"></button>
                                         </div>
                                     </div>
                                     <div class="table table-responsive " style="position: relative; height: 245px; overflow: auto; display: block;">
@@ -142,7 +142,7 @@
                                                     <td data-bind="text:Qualification().QId"></td>
                                                     <td data-bind="text:Qualification().NameEng"></td>
                                                     <td data-bind="text:MarksObtained"></td>
-                                                    <td><button data-bind="click:$root.Edit" class="btn btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+                                                    <td><button data-bind="click:$root.EditAcademicInformation" class="btn btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
                                                     <td><button data-bind="click:$root.Delete" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
                                                 </tr>
 

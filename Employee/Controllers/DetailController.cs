@@ -57,8 +57,8 @@ namespace Employee.Controllers
             try
             {
                 DynamicParameters param = new DynamicParameters();
-                param.Add("@p_Action", "A");
-                param.Add("@p_EmployeeId",null );
+                param.Add("@p_Action", employee.Action);
+                param.Add("@p_EmployeeId", employee.EmployeeId);
                 param.Add("@p_Name", employee.Name);
                 param.Add("@p_DateOfBirth", employee.DateOfBirth);
                 param.Add("@p_EmailAddress", employee.EmailAddress);
@@ -69,7 +69,7 @@ namespace Employee.Controllers
                 {
                     foreach(AcademicInformationModel academicInfo in employee.AcademicInformations)
                     {
-                        academicInfo.EmployeeId = result.Id;
+                        academicInfo.EmployeeId = employee.Action == "A" ?  result.Id : employee.EmployeeId;
                         SaveAcademicInformations(academicInfo);
                     }
                 }
@@ -88,9 +88,9 @@ namespace Employee.Controllers
             try
             {
                 DynamicParameters param = new DynamicParameters();
-                param.Add("@p_Action","A");
+                param.Add("@p_Action",academicInfo.Action);
                 param.Add("@p_EmployeeId",academicInfo.EmployeeId);
-                param.Add("@p_AId",null);
+                param.Add("@p_AId",academicInfo.AId);
                 param.Add("@p_QId",academicInfo.Qualification.QId);
                 param.Add("@p_MarkdObtained",academicInfo.MarksObtained);
                 ResponseData result = SqlMapper.Query<ResponseData>(con, "[dbo].[usp_iud_academic_info]",param,
@@ -102,6 +102,27 @@ namespace Employee.Controllers
 
                 throw;
             }
+        }
+
+        public EmployeeModel GetEmployeeById(int EmployeeId)
+        {
+            if (EmployeeId <= 0)
+                return null;
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@p_EmployeeId", EmployeeId);
+            EmployeeModel employee = SqlMapper.Query<EmployeeModel>(con, "usp_get_employee_by_id", param,
+                commandType: CommandType.StoredProcedure).FirstOrDefault();
+            employee.AcademicInformations = GetEmployeeAcademicInformationById(EmployeeId);
+            return employee;
+
+            
+        }
+        public List<AcademicInformationModel> GetEmployeeAcademicInformationById(int EmployeeId)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@p_EmployeeId", EmployeeId);
+            return SqlMapper.Query<AcademicInformationModel>(con, "usp_get_employee_academic_info_by_id", param,
+                commandType: CommandType.StoredProcedure).ToList();
         }
 
         

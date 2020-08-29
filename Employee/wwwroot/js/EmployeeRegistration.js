@@ -42,11 +42,13 @@ function AcademicInformation(data) {
     var self = this;
     self.Qualification = ko.observable(data.Qualification);
     self.MarksObtained = ko.observable(data.MarksObtained);
-
+    self.Action = ko.observable(data.Action);
+    self.AId = ko.observable(data.AId);
 }
 
 function EmployeeRegistrationViewModel() {
     var self = this;
+    self.Action = ko.observable('A');
     self.Qualifications = ko.observableArray([]);
     getReqArr('/Detail/GetAllQualifications', null, null, self.Qualifications)
     self.AllEmployeeList = ko.observableArray([]);
@@ -66,7 +68,7 @@ function EmployeeRegistrationViewModel() {
     self.EmailAddress = ko.observable();
     self.AcademicInformations = ko.observableArray([]);
     
-    self.Add = function () {
+    self.AddAcademicInformation = function () {
         if (!self.SelectedQualification() || !self.MarksObtained()) {
             alert("PLease Emter all the required fields");
             return;
@@ -100,7 +102,7 @@ function EmployeeRegistrationViewModel() {
         }
     
         if (!self.SelectedAcademicInformation()) {
-            var data = { Qualification: self.SelectedQualification(), MarksObtained: self.MarksObtained() };
+            var data = { Qualification: self.SelectedQualification(), MarksObtained: self.MarksObtained(), Action:'A' };
             self.AcademicInformations.push(new AcademicInformation(data));
         } else {
             self.SelectedAcademicInformation().Qualification(self.SelectedQualification());
@@ -111,7 +113,7 @@ function EmployeeRegistrationViewModel() {
         self.SelectedQualification(null);
 
     }
-    self.Edit = function (data) {
+    self.EditAcademicInformation = function (data) {
 
         self.SelectedAcademicInformation(data);
         self.MarksObtained(data.MarksObtained());
@@ -140,7 +142,36 @@ function EmployeeRegistrationViewModel() {
             self.AcademicInformations(data);
         }
     }
+    self.EditEmployeeData = function (data) {
+        self.Name(data.Name);
+        self.DOB(data.DateOfBirth.split('T')[0]);
+        self.Salary(data.Salary);
+        self.EmployeeId(data.EmployeeId);
+        self.EmailAddress(data.EmailAddress);
+        var academicInfo = [];
+        var d;
+        self.Action('E');
+        self.AcademicInformations([]);
 
+        for (var i = 0; i < data.AcademicInformations.length; i++) {
+            var getQualificationObj = self.Qualifications().filter(x => x.QId == data.AcademicInformations[i].QId)[0];
+
+            //for (var i = 0; i < self.Qualifications().length; i++) {
+            //    if (self.Qualifications()[i].QId == data.AcademicInformations.QId) {
+            //        getQualificationObj = self.Qualifications()[i];
+            //    }
+            //}
+            d = { AId: data.AcademicInformations[i].AId,  Qualification: getQualificationObj, MarksObtained: data.AcademicInformations[i].MarksObtained , Action:'E'};
+          
+            self.AcademicInformations.push(new AcademicInformation(d));
+            
+
+        }
+    };
+
+    self.EmployeeUpdate = function (data) {
+        getReqArr('/Detail/GetEmployeeById', { EmployeeId: data.EmployeeId }, null,self.EditEmployeeData)
+    }
     self.Submit = function () {
         if (!self.Name() || !self.Salary() || !self.DOB()) {
             alert("Please Enter all the required fields");
@@ -156,6 +187,7 @@ function EmployeeRegistrationViewModel() {
             return;
         }
         var data = {
+            Action: self.Action(),
             EmployeeId: self.EmployeeId(), 
             Name: self.Name(), 
             DateOfBirth: self.DOB(),

@@ -8,6 +8,7 @@ namespace Employee.Models
 {
     public class AcademicInformationModel
     {
+        public string Action { get; set; }
         public int EmployeeId { get; set; }
         public int AId { get; set; }
         public int QId { get; set; }
