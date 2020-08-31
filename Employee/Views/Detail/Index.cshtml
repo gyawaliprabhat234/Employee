@@ -34,13 +34,13 @@
                             </tr>
                         </thead>
                         <tbody data-bind="foreach:AllEmployeeList">
-                            <tr>
+                            <tr >
                                 <td data-bind="text:($index() + 1)"></td>
                                 <td data-bind="text:Name"></td>
                                 <td data-bind="text:Salary"></td>
                                 <td><button class="btn btn-info"><i class="fa fa-eye" aria-hidden="true"></i></button></td>
                                 <td><button data-bind="click:$root.EmployeeUpdate" class="btn btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-                                <td><button class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
+                                <td><button data-bind="click:$root.DeleteEmployeeData" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
                             </tr>
                             
                         </tbody>
@@ -137,7 +137,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody data-bind="foreach:AcademicInformations">
-                                                <tr>
+                                                <tr data-bind ="visible: Action() != 'D'">
                                                     <td data-bind="text:($index() + 1)"></td>
                                                     <td data-bind="text:Qualification().QId"></td>
                                                     <td data-bind="text:Qualification().NameEng"></td>

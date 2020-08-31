@@ -33,7 +33,7 @@ function postReqArr(url, data, constr, arr) {
 
     }).fail((xhr, status, message) => {
         alert(message, status);
- 
+
     });
 }
 
@@ -67,7 +67,7 @@ function EmployeeRegistrationViewModel() {
     self.DOB = ko.observable();
     self.EmailAddress = ko.observable();
     self.AcademicInformations = ko.observableArray([]);
-    
+
     self.AddAcademicInformation = function () {
         if (!self.SelectedQualification() || !self.MarksObtained()) {
             alert("PLease Emter all the required fields");
@@ -82,12 +82,12 @@ function EmployeeRegistrationViewModel() {
             alert("please enter marks between 0 and 100");
             return;
         }
- 
+
         for (var i = 0; i < self.AcademicInformations().length; i++) {
 
             if (self.SelectedAcademicInformation()) {
 
-               if( self.SelectedAcademicInformation().Qualification().QId != self.SelectedQualification().QId) {
+                if (self.SelectedAcademicInformation().Qualification().QId != self.SelectedQualification().QId) {
                     if (self.SelectedQualification().QId == self.AcademicInformations()[i].Qualification().QId) {
                         alert(self.SelectedQualification().NameEng + " is already in the list");
                         return;
@@ -95,14 +95,16 @@ function EmployeeRegistrationViewModel() {
                 }
             } else {
                 if (self.SelectedQualification().QId == self.AcademicInformations()[i].Qualification().QId) {
-                    alert(self.SelectedQualification().NameEng + " is already in the list");
-                    return;
+                    if (self.AcademicInformations()[i].Action() !='D'){
+                        alert(self.SelectedQualification().NameEng + " is already in the list");
+                        return;
+                    }
                 }
             }
         }
-    
+
         if (!self.SelectedAcademicInformation()) {
-            var data = { Qualification: self.SelectedQualification(), MarksObtained: self.MarksObtained(), Action:'A' };
+            var data = { Qualification: self.SelectedQualification(), MarksObtained: self.MarksObtained(), Action: 'A' };
             self.AcademicInformations.push(new AcademicInformation(data));
         } else {
             self.SelectedAcademicInformation().Qualification(self.SelectedQualification());
@@ -134,12 +136,13 @@ function EmployeeRegistrationViewModel() {
             return;
         }
         if (confirm("Are you sure to delete")) {
-            var data = self.AcademicInformations().filter(function (item) {
-                if (item.Qualification().QId != data.Qualification().QId) {
-                    return item;
-                }
-            });
-            self.AcademicInformations(data);
+            if (data.Action() == 'A')
+                self.AcademicInformations.remove(data);
+            else if (data.Action() == 'E') {
+                data.Action('D');
+              
+            }
+
         }
     }
     self.EditEmployeeData = function (data) {
@@ -148,8 +151,8 @@ function EmployeeRegistrationViewModel() {
         self.Salary(data.Salary);
         self.EmployeeId(data.EmployeeId);
         self.EmailAddress(data.EmailAddress);
-        var academicInfo = [];
-        var d;
+        //   var academicInfo = []; not used
+        //  var d; // used vayo hana?
         self.Action('E');
         self.AcademicInformations([]);
 
@@ -159,39 +162,56 @@ function EmployeeRegistrationViewModel() {
             //for (var i = 0; i < self.Qualifications().length; i++) {
             //    if (self.Qualifications()[i].QId == data.AcademicInformations.QId) {
             //        getQualificationObj = self.Qualifications()[i];
-            //    }
+            //    } ma herxu
             //}
-            d = { AId: data.AcademicInformations[i].AId,  Qualification: getQualificationObj, MarksObtained: data.AcademicInformations[i].MarksObtained , Action:'E'};
-          
-            self.AcademicInformations.push(new AcademicInformation(d));
-            
+            //  var  d = { AId: data.AcademicInformations[i].AId,  Qualification: getQualificationObj, MarksObtained: data.AcademicInformations[i].MarksObtained , Action:'E'};
+
+            self.AcademicInformations.push(new AcademicInformation({
+                AId: data.AcademicInformations[i].AId,
+                Qualification: getQualificationObj,
+                MarksObtained: data.AcademicInformations[i].MarksObtained,
+                Action: 'E'
+            }));
+
 
         }
     };
 
     self.EmployeeUpdate = function (data) {
-        getReqArr('/Detail/GetEmployeeById', { EmployeeId: data.EmployeeId }, null,self.EditEmployeeData)
+        getReqArr('/Detail/GetEmployeeById', { EmployeeId: data.EmployeeId }, null, self.EditEmployeeData)
     }
-    self.Submit = function () {
+
+    self.IsFormValid = function () {
+        var errMsg = "";
         if (!self.Name() || !self.Salary() || !self.DOB()) {
-            alert("Please Enter all the required fields");
-            return;
+          errMsg = "Please Enter all the required fields <br>";
+          
         }
 
         if (isNaN(self.Salary())) {
-            alert("please enter the Salary value");
-            return;
+           errMsg += "please enter the Salary value <br>";
+            
         }
         if (self.Salary() > 1000000000 || self.Salary() < 0) {
-            alert("please enter SAlary between 0 and 1000000000");
+          errMsg +=  "please enter SAlary between 0 and 1000000000";
+           
+        }
+        if (errMsg) {
+            alert(errMsg)
+            return false;
+        }
+        return true;
+    }
+    self.Submit = function () {
+        if (!self.IsFormValid()) {
             return;
         }
         var data = {
             Action: self.Action(),
-            EmployeeId: self.EmployeeId(), 
-            Name: self.Name(), 
+            EmployeeId: self.EmployeeId(),
+            Name: self.Name(),
             DateOfBirth: self.DOB(),
-            EmailAddress: self.EmailAddress(), 
+            EmailAddress: self.EmailAddress(),
             Salary: self.Salary(),
             AcademicInformations: self.AcademicInformations()
         };
@@ -217,12 +237,25 @@ function EmployeeRegistrationViewModel() {
         });
 
     }
+    self.DeleteEmployeeData = function (data) {
+        data.Action = "D";
+        $.ajaxSetup({ async: false });
+        $.post("/Detail/SaveEmployee", data , function (response) {
+            if (response.IsSuccess) {
+                alert(response.Message);
+               // self.LoadEmployeeList();
+               self.AllEmployeeList.remove(data);
+            }
+        })
+       
+    }
 
 }
 $(document).ready(function () {
     {
-       
+
         ko.applyBindings(new EmployeeRegistrationViewModel());
 
-    }})
+    }
+})
 
